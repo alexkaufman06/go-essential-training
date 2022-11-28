@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"http"
+	"net/http"
 )
 
 func main() {
@@ -14,14 +14,18 @@ func main() {
 	}
 }
 
-
 func contentType(url string) (string, error) {
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Printf("ERROR: %s\n", err)
-	} else {
-		fmt.Println(resp)
+		return "", err
 	}
-	return url, nil
-}
 
+	defer resp.Body.Close() // Make sure we close the body
+
+	cType := resp.Header.Get("Content-Type")
+	if cType == "" {
+		return "", fmt.Errorf("can't find Content-Type header")
+	}
+
+	return cType, nil
+}
