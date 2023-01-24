@@ -11,6 +11,27 @@ type Budget struct {
 	Expires    time.Time
 }
 
+func NewBudget(campaignId string, balance float64, expires time.Time) (*Budget, error) {
+	if campaignId == "" {
+		return nil, fmt.Errorf("empty campaignId")
+	}
+
+	if balance < 0 {
+		return nil, fmt.Errorf("balance must be greater than 0")
+	}
+
+	if expires.Before(time.Now()) {
+		return nil, fmt.Errorf("expiration date must be in the future")
+	}
+
+	b := Budget{
+		CampaignId: campaignId,
+		Balance:    balance,
+		Expires:    expires,
+	}
+	return &b, nil // return pointer to budget value
+}
+
 func (b Budget) TimeLeft() time.Duration { // (b Budget) is a receiver, it adds a method to the Budget struct
 	return b.Expires.Sub(time.Now().UTC())
 }
@@ -49,4 +70,20 @@ func main() {
 	var b3 Budget
 	fmt.Println("Struct with default values")
 	fmt.Printf("%#v\n", b3)
+
+	expires := time.Now().UTC().Add(10 * 24 * time.Hour)
+	b4, err := NewBudget("money for schools", 100.5, expires)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+	} else {
+		fmt.Printf("%#v\n", b4)
+	}
+
+	b5, err := NewBudget("money for fools", -100.5, expires)
+	if err != nil {
+		fmt.Println("ERROR:", err)
+	} else {
+		fmt.Printf("%#v\n", b5)
+	}
+
 }
