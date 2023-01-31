@@ -1,0 +1,10 @@
+2023/01/30 18:14:35 error: open /path/to/config.toml: no such file or directory
+can't open configuration file
+main.readConfig
+	/Users/akaufman/Desktop/repos/go-essential-training/error-handling/pkg-errors.go:17
+main.main
+	/Users/akaufman/Desktop/repos/go-essential-training/error-handling/pkg-errors.go:35
+runtime.main
+	/usr/local/Cellar/go@1.18/1.18.8/libexec/src/runtime/proc.go:250
+runtime.goexit
+	/usr/local/Cellar/go@1.18/1.18.8/libexec/src/runtime/asm_amd64.s:1571
